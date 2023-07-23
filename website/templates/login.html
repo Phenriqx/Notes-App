@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+    <main class="container py-5 text-center">
+        <form action="/login" method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control mx-auto w-auto is-invalid") }}
+
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control mx-auto w-auto", placeholder=('Email')) }}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control mx-auto w-auto is-invalid") }}
+
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control mx-auto w-auto", placeholder=('Password')) }}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </main>
+{% endblock %}
