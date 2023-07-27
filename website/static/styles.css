@@ -1,0 +1,52 @@
+.janela-modal {
+    width: 100vw;
+    height: 90vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.janela {
+    width: 60%;
+    min-width: 450px;
+    min-height: 200px;
+    background-color: hsla(0, 0%, 0%, 0.151);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.fechar {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 0;
+    background-color: rgba(243, 59, 59, 0.959);
+    color: #fff;
+    cursor: pointer;
+}
+
+.janela-modal.abrir {
+    display: flex;
+}
+
+@keyframes openmodal {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -20px, -5px);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+} 
+
+.abrir .janela {
+    animation: openmodal 0.8s;
+}
