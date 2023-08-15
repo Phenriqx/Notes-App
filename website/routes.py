@@ -1,15 +1,31 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_manager, current_user, login_user, logout_user, login_required
 from website import db, app, bcrypt
-from website.forms import RegistrationForm, LoginForm, AddNote
+from website.forms import RegistrationForm, LoginForm, AddNoteForm
 from website.models import User, Notes
 
 
-@login_required
 @app.route('/')
+@login_required
 def index():
-    form = AddNote()
-    return render_template('index.html', form=form)
+    if current_user.is_authenticated:
+        user = User.query.filter_by(email=current_user.email).first()
+        notes = Notes.query.filter_by(user_id=user.id).all()
+        return render_template('notes.html', notes=notes)
+    return redirect(url_for('login'))
+
+
+@app.route('/note/new', methods=['GET', 'POST'])
+@login_required
+def add_notes():
+    form = AddNoteForm()
+    if form.validate_on_submit():
+        note = Notes(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(note)
+        db.session.commit()
+        flash('Note created successfully!', 'success')
+        return redirect(url_for('index'))
+    return render_template('add_notes.html', form=form, title='Add Note')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -50,3 +66,15 @@ def register():
         flash(f'Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form, title='Register')
+
+
+@app.route('/note/<int:note_id>/delete>', methods=['POST'])
+@login_required
+def delete_note(note_id):
+    note = Notes.query.get_or_404(note_id)
+    if note.author != current_user:
+        abort(403)
+    db.session.delete(note)
+    db.session.commit()
+    flash('Your note has been deleted!', 'success')
+    return redirect(url_for('index'))

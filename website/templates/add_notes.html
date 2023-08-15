@@ -1,5 +1,40 @@
-{% extends 'layout.html' %}
+{% extends 'index.html' %}
 
 {% block main %}
-    
+    <div class="add-note">
+        <main class="container py-5 text-center">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {% if form.title.errors %}
+                    {{ form.title(class="form-control mx-auto w-auto is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.title(class="form-control mx-auto w-auto", placeholder=('Title')) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {% if form.content.errors %}
+                    {{ form.content(class="form-control mx-auto w-auto is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.content(class="form-control mx-auto w-auto content1", placeholder=('Content')) }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </main>
+    </div>
 {% endblock %}

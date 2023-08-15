@@ -18,6 +18,9 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f'User (username: {self.username}, email: {self.email})'
     
+    def __str__(self):
+       return f'Username: {self.username}, Email: {self.email}'
+    
     
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +31,9 @@ class Notes(db.Model):
     
     def __repr__(self):
         return f'title: {self.title} at {self.date_posted}'
+    
+    def __str__(self):
+        return f'title: {self.title} by {self.author}'
     
 
 def init_db():

@@ -1,52 +1,69 @@
-.janela-modal {
-    width: 100vw;
-    height: 90vh;
-    position: relative;
-    top: 0;
-    left: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
 }
 
-.janela {
-    width: 60%;
-    min-width: 450px;
-    min-height: 200px;
-    background-color: hsla(0, 0%, 0%, 0.151);
-    backdrop-filter: blur(10px);
-    padding: 50px;
-    border-radius: 20px;
-}
-
-.fechar {
+.add-note {
+    width: 500px;
+    background-color: #fff;
+    box-shadow: 0 0 20px #999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 0;
-    background-color: rgba(243, 59, 59, 0.959);
-    color: #fff;
-    cursor: pointer;
+    border-radius: 15px;
 }
 
-.janela-modal.abrir {
+.content1 {
+    height: 300px;
+}
+
+#container {
     display: flex;
+    margin: 0 auto;
 }
 
-@keyframes openmodal {
-    from {
-        opacity: 0;
-        transform: translate3d(0, -20px, -5px);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-} 
+.note {
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+    width: 300px;
+    min-height: 400px;
+    padding: 25px;
+    text-align: justify;
+    background-color: #f8f8f8;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0 ,0.389);
+    border-radius: 15px;
+}
 
-.abrir .janela {
-    animation: openmodal 0.8s;
+.note h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    position: relative;
+}
+
+.note h4::before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 40px;
+    background-color: #06d62e;
+    bottom: 0.5px;
+    border-radius: 100px;
+}
+
+.note-text {
+    overflow-inline: clip;
+}
+
+.note-text:hover {
+    overflow-inline: visible;
+    word-break: break-all;
+}
+
+.delete-button {
+    width: 200px;
+    margin-left: 20px;
 }
