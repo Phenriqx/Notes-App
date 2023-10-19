@@ -1,8 +1,8 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_manager, current_user, login_user, logout_user, login_required
 from website import db, app, bcrypt
-from website.forms import RegistrationForm, LoginForm, AddNoteForm
-from website.models import User, Notes
+from website.forms import RegistrationForm, LoginForm, AddNoteForm, AddCategoryForm
+from website.models import User, Notes, Categories
 
 
 @app.route('/')
@@ -11,8 +11,31 @@ def index():
     if current_user.is_authenticated:
         user = User.query.filter_by(email=current_user.email).first()
         notes = Notes.query.filter_by(user_id=user.id).all()
-        return render_template('notes.html', notes=notes)
+        categories = Categories.query.all()
+        return render_template('notes.html', notes=notes, categories=categories)
     return redirect(url_for('login'))
+
+
+# @app.route('/categories/<string:ctg_name>/notes', methods=['GET', 'POST'])
+# @login_required
+# def categories(ctg_name):
+#     category = Categories.query.get_or_404(ctg_name)
+#     notes = Notes.query.filter_by(category=category)
+#     return render_template('categories.html', notes=notes)
+
+
+@app.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    form = AddCategoryForm()
+    if form.validate_on_submit():
+        category = Categories(name=form.category.data, category_id=1)
+        db.session.add(category)
+        db.session.commit()
+        flash('Category added successfully!', 'success')
+        return redirect(url_for('index'))
+    return render_template('add_category.html', form=form)
+        
 
 
 @app.route('/note/new', methods=['GET', 'POST'])
@@ -76,5 +99,24 @@ def delete_note(note_id):
         abort(403)
     db.session.delete(note)
     db.session.commit()
-    flash('Your note has been deleted!', 'success')
+    flash('Your note has been deleted!', 'info')
     return redirect(url_for('index'))
+
+
+@app.route('/note/<int:note_id>/update>', methods=['POST', 'GET'])
+@login_required
+def update_note(note_id):
+    note = Notes.query.get_or_404(note_id)
+    if note.author != current_user:
+        abort(403)
+    form = AddNoteForm()
+    if form.validate_on_submit():
+        note.title = form.title.data
+        note.content = form.content.data
+        db.session.commit()
+        flash('Your note has been updated', 'success')
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        form.title.data = note.title
+        form.content.data = note.content
+    return render_template('add_notes.html', title='Update Note', form=form)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
-from website.models import User
+from website.models import User, Categories
 
 
 class RegistrationForm(FlaskForm):
@@ -33,3 +33,13 @@ class AddNoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=1, max=60)])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Add Note')
+    
+
+class AddCategoryForm(FlaskForm):
+    category = StringField('Category', validators=[DataRequired(), Length(min=1, max=50)])
+    submit = SubmitField('Add Category')
+    
+    def validate_category(self, category):
+        ctg = Categories.query.filter_by(name=category.data).first()
+        if ctg:
+            raise ValidationError('This category already exists!')

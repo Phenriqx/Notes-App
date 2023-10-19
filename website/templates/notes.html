@@ -11,6 +11,9 @@
                 <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST">
                     <button class="btn btn-danger btn-sm delete-button">Delete</button>
                 </form>
+                <form action="{{ url_for('update_note', note_id=note.id) }}" method="POST">
+                    <button class="btn btn-success btn-sm delete-button mt-2 update-button">Update</button>
+                </form>
             </div>
         {% endfor %}
     </nav>

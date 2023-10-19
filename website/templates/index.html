@@ -33,11 +33,17 @@
                             Categories
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Categories</a></li>
+
+                            <hr class="dropdown-divider">
+                            {% for category in categories %}
+                                <li><a class="dropdown-item" href="#">{{ category.name }}</a></li>
+                            {% endfor %}
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Add new category</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('add_category') }}">Add new category</a></li>
                         </ul>
                     </li>
                 </ul>

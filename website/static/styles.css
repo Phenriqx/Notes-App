@@ -67,3 +67,12 @@
     width: 200px;
     margin-left: 20px;
 }
+
+.update-button {
+    background-color: #00b424;
+    border: none;
+}
+
+.update-button:hover {
+    background-color: #01991f;
+}
