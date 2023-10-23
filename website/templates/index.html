@@ -37,7 +37,7 @@
 
                             <hr class="dropdown-divider">
                             {% for category in categories %}
-                                <li><a class="dropdown-item" href="#">{{ category.name }}</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('categories', ctg_name=category.name)}}">{{ category.name }}</a></li>
                             {% endfor %}
 
                             <li>

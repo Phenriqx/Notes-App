@@ -32,8 +32,13 @@ class LoginForm(FlaskForm):
 class AddNoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=1, max=60)])
     content = TextAreaField('Content', validators=[DataRequired()])
+    category = StringField('Category', validators=[Length(min=1, max=50)])
     submit = SubmitField('Add Note')
     
+    def validate_category(self, category):
+        ctg = Categories.query.filter_by(name=category.data).first()
+        if not ctg:
+            raise ValidationError('This category does not exist!')
 
 class AddCategoryForm(FlaskForm):
     category = StringField('Category', validators=[DataRequired(), Length(min=1, max=50)])

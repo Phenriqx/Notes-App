@@ -16,12 +16,12 @@ def index():
     return redirect(url_for('login'))
 
 
-# @app.route('/categories/<string:ctg_name>/notes', methods=['GET', 'POST'])
-# @login_required
-# def categories(ctg_name):
-#     category = Categories.query.get_or_404(ctg_name)
-#     notes = Notes.query.filter_by(category=category)
-#     return render_template('categories.html', notes=notes)
+@app.route('/categories/<string:ctg_name>/notes', methods=['GET', 'POST'])
+@login_required
+def categories(ctg_name):
+    category = Categories.query.filter_by(name=ctg_name).first()
+    notes = Notes.query.filter_by(category=category.name)
+    return render_template('categories.html', notes=notes, title=f'{category.name}')
 
 
 @app.route('/add_category', methods=['GET', 'POST'])
@@ -29,7 +29,7 @@ def index():
 def add_category():
     form = AddCategoryForm()
     if form.validate_on_submit():
-        category = Categories(name=form.category.data, category_id=1)
+        category = Categories(name=form.category.data)
         db.session.add(category)
         db.session.commit()
         flash('Category added successfully!', 'success')
@@ -43,7 +43,9 @@ def add_category():
 def add_notes():
     form = AddNoteForm()
     if form.validate_on_submit():
-        note = Notes(title=form.title.data, content=form.content.data, author=current_user)
+        category = Categories.query.filter_by(name=form.category.data).first()
+        note = Notes(title=form.title.data, content=form.content.data, author=current_user, 
+                     category=category.name)
         db.session.add(note)
         db.session.commit()
         flash('Note created successfully!', 'success')
